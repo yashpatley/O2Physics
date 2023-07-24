@@ -53,23 +53,39 @@ struct lambdaAnalysis {
 
   // TPC TOF Protons
   Configurable<std::vector<float>> protonTPCPIDpt{
-      "protonTPCPIDpt", {999.}, "pT dependent TPC cuts protons"};
+    "protonTPCPIDpt",
+    {999.},
+    "pT dependent TPC cuts protons"};
   Configurable<std::vector<int>> protonTPCPIDcut{
-      "protonTPCPIDcut", {3}, "TPC cuts protons"};
+    "protonTPCPIDcut",
+    {3},
+    "TPC cuts protons"};
   Configurable<std::vector<float>> protonTOFPIDpt{
-      "protonTOFPIDpt", {999.}, "pT dependent TOF cuts protons"};
+    "protonTOFPIDpt",
+    {999.},
+    "pT dependent TOF cuts protons"};
   Configurable<std::vector<int>> protonTOFPIDcut{
-      "protonTOFPIDCut", {3}, "TOF cuts protons"};
+    "protonTOFPIDCut",
+    {3},
+    "TOF cuts protons"};
 
   // TPC TOF Protons
   Configurable<std::vector<float>> kaonTPCPIDpt{
-      "kaonTPCPIDpt", {999.}, "pT dependent TPC cuts kaons"};
+    "kaonTPCPIDpt",
+    {999.},
+    "pT dependent TPC cuts kaons"};
   Configurable<std::vector<int>> kaonTPCPIDcut{
-      "kaonTPCPIDcut", {3}, "TPC cuts kaons"};
+    "kaonTPCPIDcut",
+    {3},
+    "TPC cuts kaons"};
   Configurable<std::vector<float>> kaonTOFPIDpt{
-      "kaonTOFPIDpt", {999.}, "pT dependent TOF cuts kaons"};
+    "kaonTOFPIDpt",
+    {999.},
+    "pT dependent TOF cuts kaons"};
   Configurable<std::vector<int>> kaonTOFPIDcut{
-      "kaonTOFPIDcut", {3}, "TOF cuts kaons"};
+    "kaonTOFPIDcut",
+    {3},
+    "TOF cuts kaons"};
 
   // Event Mixing.
   Configurable<int> nMix{"nMix", 5, "Number of Events to be mixed"};
@@ -85,9 +101,12 @@ struct lambdaAnalysis {
 
   // Histogram Registry.
   HistogramRegistry histos{
-      "histos", {}, OutputObjHandlingPolicy::AnalysisObject};
+    "histos",
+    {},
+    OutputObjHandlingPolicy::AnalysisObject};
 
-  void init(InitContext const &) {
+  void init(InitContext const&)
+  {
 
     // Define Axis.
     const AxisSpec axisEv(1, 0, 1, "N_{Ev}");
@@ -165,8 +184,9 @@ struct lambdaAnalysis {
   }
 
   template <bool before, typename T>
-  void fillQA(T const &trkPr, T const &trkKa, bool &trk1HasTOF,
-              bool &trk2HasTOF) {
+  void fillQA(T const& trkPr, T const& trkKa, bool& trk1HasTOF,
+              bool& trk2HasTOF)
+  {
 
     if (before) {
       if (std::abs(trkPr.tpcNSigmaPr()) < cfgPIDprecut) {
@@ -215,7 +235,9 @@ struct lambdaAnalysis {
     }
   }
 
-  template <typename T> void selTracks(T const &track, bool &trackFlag) {
+  template <typename T>
+  void selTracks(T const& track, bool& trackFlag)
+  {
 
     if (track.pt() < cfgPtMin)
       trackFlag = false;
@@ -234,11 +256,12 @@ struct lambdaAnalysis {
   }
 
   template <bool mix, bool mc, typename trackType>
-  void fillDataHistos(trackType const &trk1, trackType const &trk2,
-                      float const &sph) {
+  void fillDataHistos(trackType const& trk1, trackType const& trk2,
+                      float const& sph)
+  {
 
     bool isTrk1Proton{true}, isTrk2Kaon{true}, trk1HasTOF{false},
-        trk2HasTOF{false};
+      trk2HasTOF{false};
 
     auto prTpcPIDpt = static_cast<std::vector<float>>(protonTPCPIDpt);
     auto prTpcPIDcut = static_cast<std::vector<int>>(protonTPCPIDcut);
@@ -253,7 +276,7 @@ struct lambdaAnalysis {
     float massProton = TDatabasePDG::Instance()->GetParticle(2212)->Mass();
     float massKaon = TDatabasePDG::Instance()->GetParticle(321)->Mass();
 
-    for (auto const &[trkPr, trkKa] :
+    for (auto const& [trkPr, trkKa] :
          soa::combinations(soa::CombinationsFullIndexPolicy(trk1, trk2))) {
       // Do not analyse same index tracks.
       if (trkPr.index() == trkKa.index())
@@ -370,8 +393,9 @@ struct lambdaAnalysis {
   using resoCols = aod::ResoCollisions;
   using resoTracks = aod::ResoTracks;
 
-  void processData(resoCols::iterator const &collision,
-                   resoTracks const &tracks) {
+  void processData(resoCols::iterator const& collision,
+                   resoTracks const& tracks)
+  {
 
     if (tracks.size() < 3)
       return;
@@ -390,17 +414,18 @@ struct lambdaAnalysis {
   // Processing Event Mixing
   SliceCache cache;
   using BinningType =
-      ColumnBinningPolicy<aod::collision::PosZ, aod::resocollision::MultV0M>;
+    ColumnBinningPolicy<aod::collision::PosZ, aod::resocollision::MultV0M>;
   BinningType binningPositions{{cfgVtxBins, cfgMultBins}, true};
 
-  void processMix(resoCols &collisions, resoTracks const &tracks) {
+  void processMix(resoCols& collisions, resoTracks const& tracks)
+  {
 
     LOGF(debug, "Event Mixing Started");
     auto tracksTuple = std::make_tuple(tracks);
     SameKindPair<resoCols, resoTracks, BinningType> pairs{
-        binningPositions, nMix,  -1, collisions,
-        tracksTuple,      &cache}; // -1 is the number of the bin to skip
-    for (auto &[c1, t1, c2, t2] : pairs) {
+      binningPositions, nMix, -1, collisions,
+      tracksTuple, &cache}; // -1 is the number of the bin to skip
+    for (auto& [c1, t1, c2, t2] : pairs) {
       fillDataHistos<true, false>(t1, t2, c1.spherocity());
     }
   }
@@ -408,6 +433,7 @@ struct lambdaAnalysis {
   PROCESS_SWITCH(lambdaAnalysis, processMix, "Process for Mixed Events", false);
 };
 
-WorkflowSpec defineDataProcessing(ConfigContext const &cfgc) {
+WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
+{
   return WorkflowSpec{adaptAnalysisTask<lambdaAnalysis>(cfgc)};
 }
