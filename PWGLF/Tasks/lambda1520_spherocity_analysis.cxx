@@ -339,7 +339,7 @@ struct lambdaAnalysis {
         } else {
           if (trkPr.sign() == 1) {
             histos.fill(HIST("Analysis/hInvMassLS1"), p.M());
-            histos.fill(HIST("Analysis/h4InvMassLS1"), p.M(), p.Pt(), sph, mult);            
+            histos.fill(HIST("Analysis/h4InvMassLS1"), p.M(), p.Pt(), sph, mult);
           } else {
             histos.fill(HIST("Analysis/hInvMassLS2"), p.M());
             histos.fill(HIST("Analysis/h4InvMassLS2"), p.M(), p.Pt(), sph, mult);
