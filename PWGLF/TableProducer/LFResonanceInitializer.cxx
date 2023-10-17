@@ -88,7 +88,7 @@ struct reso2initializer {
   Configurable<bool> ConfBypassCCDB{"ConfBypassCCDB", false, "Bypass loading CCDB part to save CPU time and memory"}; // will be affected to b_z value.
 
   // Track filter from tpcSkimsTableCreator
-  Configurable<int> trackSelection{"trackSelection", 0, "Track selection: 0 -> No Cut, 1 -> kGlobalTrack, 2 -> kGlobalTrackWoPtEta, 3 -> kGlobalTrackWoDCA, 4 -> kQualityTracks, 5 -> kInAcceptanceTracks"};
+  Configurable<int> trackSelection{"trackSelection", 0, "Track selection: 0 -> No Cut, 1 -> kGlobalTrack, 2 -> kGlobalTrackWoPtEta, 3 -> kGlobalTrackWoDCA, 4 -> kQualityTracks, 5 -> kInAcceptanceTracks, 6 -> kQualityTracksTPC, 7 -> kQualityTracksITS""};
   Configurable<int> trackSphDef{"trackSphDef", 0, "Spherocity Definition: |pT| = 1 -> 0, otherwise -> 1"};
   Configurable<int> trackSphMin{"trackSphMin", 10, "Number of tracks for Spherocity Calculation"};
 
@@ -146,7 +146,9 @@ struct reso2initializer {
                        ((trackSelection.node() == 2) && requireGlobalTrackWoPtEtaInFilter()) ||
                        ((trackSelection.node() == 3) && requireGlobalTrackWoDCAInFilter()) ||
                        ((trackSelection.node() == 4) && requireQualityTracksInFilter()) ||
-                       ((trackSelection.node() == 5) && requireTrackCutInFilter(TrackSelectionFlags::kInAcceptanceTracks));
+                       ((trackSelection.node() == 5) && requireTrackCutInFilter(TrackSelectionFlags::kInAcceptanceTracks)) ||
+                       ((trackSelection.node() == 6) && requireTrackCutInFilter(TrackSelectionFlags::kQualityTracksTPC)) ||
+                       ((trackSelection.node() == 7) && requireQualityTracksITSInFilter());
   Filter tpcPIDFilter = nabs(aod::pidtpc::tpcNSigmaPi) < pidnSigmaPreSelectionCut || nabs(aod::pidtpc::tpcNSigmaKa) < pidnSigmaPreSelectionCut || nabs(aod::pidtpc::tpcNSigmaPr) < pidnSigmaPreSelectionCut; // TPC
   Filter trackEtaFilter = nabs(aod::track::eta) < cfgCutEta;                                                                                                                                                 // Eta cut
   Filter collisionFilter = nabs(aod::collision::posZ) < ConfEvtZvtx;
