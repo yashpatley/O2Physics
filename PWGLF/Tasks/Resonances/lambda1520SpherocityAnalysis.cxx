@@ -415,7 +415,7 @@ struct lambdaAnalysis {
       // pT, DCA, Global Tracks and PVcontrib selection.
       if (!selTracks(trkPr) || !selTracks(trkKa))
         continue;
-      
+
       // Apply PID Selection
       if (cUseOnlyTOFTrackPr && !trkPr.hasTOF())
         continue;
