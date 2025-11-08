@@ -1998,3 +1998,4 @@ WorkflowSpec defineDataProcessing(ConfigContext const& cfgc)
     adaptAnalysisTask<LambdaSpinCorrelation>(cfgc),
     adaptAnalysisTask<LambdaR2Correlation>(cfgc)};
 }
+ 
