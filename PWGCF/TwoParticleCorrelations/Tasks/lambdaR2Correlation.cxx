@@ -22,9 +22,15 @@
 #include "Common/DataModel/CollisionAssociationTables.h"
 #include "Common/DataModel/EventSelection.h"
 #include "Common/DataModel/Multiplicity.h"
+#include "Common/DataModel/PIDResponse.h"
 #include "Common/DataModel/PIDResponseTPC.h"
 #include "Common/DataModel/TrackSelectionTables.h"
 
+#include "CCDB/BasicCCDBManager.h"
+#include "CommonConstants/PhysicsConstants.h"
+#include "Framework/ASoAHelpers.h"
+#include "Framework/AnalysisTask.h"
+#include "Framework/runDataProcessing.h"
 #include <CCDB/BasicCCDBManager.h>
 #include <CommonConstants/MathConstants.h>
 #include <CommonConstants/PhysicsConstants.h>
@@ -40,6 +46,7 @@
 #include <Framework/SliceCache.h>
 #include <Framework/runDataProcessing.h>
 
+#include "TPDGCode.h"
 #include <TH1.h>
 #include <TList.h>
 #include <TObject.h>
@@ -49,16 +56,6 @@
 #include <array>
 #include <cmath>
 #include <cstdint>
-#include "Common/DataModel/PIDResponse.h"
-
-#include "CCDB/BasicCCDBManager.h"
-#include "CommonConstants/PhysicsConstants.h"
-#include "Framework/ASoAHelpers.h"
-#include "Framework/AnalysisTask.h"
-#include "Framework/runDataProcessing.h"
-
-#include "TPDGCode.h"
-
 #include <string>
 #include <string_view>
 #include <vector>
