@@ -389,8 +389,8 @@ struct LambdaTableProducer {
 
   // Initialize Global Variables
   float cent = 0., mult = 0.;
-  TList *ccdbObjRecoEff = nullptr;
-  TList *ccdbObjMatchEff = nullptr;
+  TList* ccdbObjRecoEff = nullptr;
+  TList* ccdbObjMatchEff = nullptr;
   static constexpr std::string_view SubDir[] = {"QA/Lambda/", "QA/AntiLambda/", "QA/KaonPlus/", "QA/KaonMinus/"};
 
   void init(InitContext const&)
